@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from fastmcp.server import FastMCP
+import os
 
 RECORDS = json.loads(Path(__file__).with_name("records.json").read_text())
 LOOKUP = {r["id"]: r for r in RECORDS}
@@ -41,4 +42,5 @@ def create_server():
 
 
 if __name__ == "__main__":
-    create_server().run(transport="sse", host="127.0.0.1", port=8000)
+    port = int(os.environ.get("PORT", 8000))  # fallback for local dev
+    create_server().run(transport="sse", host="0.0.0.0", port=port)
