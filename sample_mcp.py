@@ -2,6 +2,13 @@ import json
 from pathlib import Path
 from fastmcp.server import FastMCP
 import os
+from fastapi.responses import PlainTextResponse
+
+app = create_server().app  # 取得 FastAPI 物件，注意不要重複啟動
+
+@app.get("/health", response_class=PlainTextResponse)
+async def health():
+    return "ok"
 
 RECORDS = json.loads(Path(__file__).with_name("records.json").read_text())
 LOOKUP = {r["id"]: r for r in RECORDS}
